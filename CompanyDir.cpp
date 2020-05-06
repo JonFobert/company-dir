@@ -173,23 +173,41 @@ int main()
 {
     //https://stackoverflow.com/questions/33123371/how-to-create-array-of-an-abstract-class-in-c/33123456
     Employee *employees[50];
+    int employeesCounter = 0;
+
     bool moreEmployeesToAdd = true;
 
-    bool response;
-    cout << "Welcome to the Company Directory!\nWhat would you like to do?\n0 - Display list of employees\n1 - Add an Employee\n";
-    cin >> response;
     while (moreEmployeesToAdd)
     {
-        if (response)
+        int response;
+        cout << "Welcome to the Company Directory!\nWhat would you like to do?\n0 - Quit\n1 - Display list of employees\n2 - Add an Employee\n";
+        cin >> response;
+        if (response == 0)
+        {
+            moreEmployeesToAdd = false;
+        }
+        if (response == 1)
+        {
+            employeeData employeeElementData = employees[0]->getData();
+            cout << employeeElementData.name;
+            cout << employeeElementData.salary;
+            cout << employeeElementData.dept;
+            cout << "\n\n";
+            //}
+        }
+        if (response == 2)
         {
             cout << "Would you like to add an individual Contributer?\n0 - No\n1 - Yes\n";
             cin.ignore();
             cin >> response;
             if (response)
             {
-                Employee *hiredEmployee = new IndivContributer;
+                IndivContributer newIndivContr;
+                Employee *hiredEmployee = &newIndivContr;
                 hiredEmployee->setData();
                 hiredEmployee->getData();
+                employees[employeesCounter] = hiredEmployee;
+                employeesCounter++;
             }
             else
             {
@@ -198,9 +216,12 @@ int main()
                 cin >> response;
                 if (response)
                 {
-                    Employee *hiredEmployee = new Executive;
+                    Executive newExec;
+                    Employee *hiredEmployee = &newExec;
                     hiredEmployee->setData();
                     hiredEmployee->getData();
+                    employees[employeesCounter] = hiredEmployee;
+                    employeesCounter++;
                 }
                 else
                 {
@@ -209,19 +230,4 @@ int main()
             }
         }
     }
-    /*
-    IndivContributer moe;
-    moe.setData("moe", 43, "writing");
-    employeeData moesData = moe.getData();
-    cout << moesData.name << "\n"
-         << moesData.salary << "\n"
-         << moesData.dept << "\n";
-
-    Executive carl;
-    carl.setData("carl", 430, "directing");
-    employeeData carlsData = carl.getData();
-    cout << carlsData.name << "\n"
-         << carlsData.salary << "\n"
-         << carlsData.dept << "\n";
-    */
 }

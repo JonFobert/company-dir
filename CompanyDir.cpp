@@ -1,6 +1,7 @@
 #include <iostream>
 #include <string>
 #include <sstream>
+#include <vector>
 using namespace std;
 
 typedef struct employeeData
@@ -172,7 +173,8 @@ public:
 int main()
 {
     //https://stackoverflow.com/questions/33123371/how-to-create-array-of-an-abstract-class-in-c/33123456
-    Employee *employees[50];
+    vector<Employee *> employees(20);
+
     int employeesCounter = 0;
 
     bool moreEmployeesToAdd = true;
@@ -188,12 +190,14 @@ int main()
         }
         if (response == 1)
         {
-            employeeData employeeElementData = employees[0]->getData();
-            cout << employeeElementData.name;
-            cout << employeeElementData.salary;
-            cout << employeeElementData.dept;
-            cout << "\n\n";
-            //}
+            for (int i = 0; i < employeesCounter; i++)
+            {
+                employeeData employeeElementData = employees[i]->getData();
+                cout << employeeElementData.name << "\n";
+                cout << employeeElementData.salary << "\n";
+                cout << employeeElementData.dept << "\n";
+                cout << "\n\n";
+            }
         }
         if (response == 2)
         {
@@ -202,11 +206,21 @@ int main()
             cin >> response;
             if (response)
             {
-                IndivContributer newIndivContr;
-                Employee *hiredEmployee = &newIndivContr;
+                Employee *hiredEmployee = new IndivContributer;
+
+                //why wouldn't the bottom two lines work?
+                //when you allocate with new you are allocating to the heap, which will not be removed from the scope if you
+                //remove after exiting scope.
+                //IndivContributer newIndivContr;
+                //Employee *hiredEmployee = newIndivContr;
                 hiredEmployee->setData();
                 hiredEmployee->getData();
                 employees[employeesCounter] = hiredEmployee;
+                //works here...
+                //employeeData employeeElementData = employees[0]->getData();
+                //cout << employeeElementData.name;
+                //cout << employeeElementData.salary;
+                //cout << employeeElementData.dept;
                 employeesCounter++;
             }
             else
@@ -216,8 +230,7 @@ int main()
                 cin >> response;
                 if (response)
                 {
-                    Executive newExec;
-                    Employee *hiredEmployee = &newExec;
+                    Employee *hiredEmployee = new Executive;
                     hiredEmployee->setData();
                     hiredEmployee->getData();
                     employees[employeesCounter] = hiredEmployee;
